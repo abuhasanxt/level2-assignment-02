@@ -12,7 +12,7 @@ initDB();
 app.use("/api/v1", userRoutes);
 
 app.get("/", (req: Request, res: Response) => {
-  res.send("Assignment-02");
+  res.send("Vehicle Rental System");
 });
 
 app.listen(port, () => {

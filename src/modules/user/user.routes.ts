@@ -6,6 +6,7 @@ const router = Router();
 router.post("/auth/signup", userControllers.createUser);
 // get all user with get method
 router.get("/users", userControllers.getAllUser);
-router.put("/users/:userId",)
+// update user with put method
+router.put("/users/:userId",userControllers.updateUser)
 
 export const userRoutes = router;

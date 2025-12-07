@@ -19,7 +19,21 @@ const getAllUser = async () => {
         SELECT * FROM users`);
   return result;
 };
+//update user
+const updateUser = async (
+  name: string,
+  email: string,
+  phone: number,
+  id: string
+) => {
+  const result = await pool.query(
+    `UPDATE users SET name=$1, email=$2, phone=$3 WHERE id=$4 RETURNING *`,
+    [name, email, phone, id]
+  );
+  return result;
+};
 export const userServices = {
   createUser,
   getAllUser,
+  updateUser
 };
