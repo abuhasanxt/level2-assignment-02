@@ -1,5 +1,5 @@
 import { pool } from "../../config/db";
-
+//create user
 const createUser = async (
   name: string,
   email: string,
@@ -13,6 +13,13 @@ const createUser = async (
   return result;
 };
 
+// get all user
+const getAllUser = async () => {
+  const result = await pool.query(`
+        SELECT * FROM users`);
+  return result;
+};
 export const userServices = {
   createUser,
+  getAllUser,
 };
