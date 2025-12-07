@@ -8,11 +8,20 @@ const port = 5000;
 app.use(express.json());
 
 initDB();
-// user CRUD 
-app.use("/api/v1", userRoutes);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Vehicle Rental System");
+});
+// user CRUD
+app.use("/api/v1", userRoutes);
+
+//wrong route
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: "Route Not found",
+    path: req.path,
+  });
 });
 
 app.listen(port, () => {
