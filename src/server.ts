@@ -3,6 +3,7 @@ import express, { Request, Response } from "express";
 import { userRoutes } from "./modules/user/user.routes";
 import initDB from "./config/db";
 import config from "./config";
+import { authRoutes } from "./modules/auth/auth.routes";
 
 const app = express();
 const port = config.port;
@@ -15,6 +16,8 @@ app.get("/", (req: Request, res: Response) => {
 });
 // user CRUD
 app.use("/api/v1", userRoutes);
+// user auth 
+app.use("/api/v1",authRoutes)
 
 //wrong route
 app.use((req, res) => {
