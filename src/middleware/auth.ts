@@ -1,8 +1,13 @@
 import { NextFunction, Request, Response } from "express";
 
-const auth = (req: Request, res: Response, next: NextFunction) => {
-    console.log('Bhai wait ID Ancen');
-    next()
+const auth = () => {
+  return async (req: Request, res: Response, next: NextFunction) => {
+
+    const token=req.headers.authorization
+    console.log(token);
+    console.log("Bhai wait ID Ancen");
+    next();
+  };
 };
 
 export default auth;
