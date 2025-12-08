@@ -2,9 +2,10 @@ import express, { Request, Response } from "express";
 
 import { userRoutes } from "./modules/user/user.routes";
 import initDB from "./config/db";
+import config from "./config";
 
 const app = express();
-const port = 5000;
+const port = config.port;
 app.use(express.json());
 
 initDB();
