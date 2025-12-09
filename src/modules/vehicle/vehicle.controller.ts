@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { vehicleServices } from "./vehicle.service";
-
+//create vehicle
 const createVehicle = async (req: Request, res: Response) => {
   console.log(req.body);
 
@@ -19,7 +19,31 @@ const createVehicle = async (req: Request, res: Response) => {
     });
   }
 };
+// get all vehicle
+const getAllVehicle = async (req: Request, res: Response) => {
+  try {
+    const result = await vehicleServices.getAllVehicle();
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: true,
+        message: "No vehicles found",
+        data: [],
+      });
+    }
+    res.status(200).json({
+      success: true,
+      message: "Vehicle retrieved Successfully",
+      data: result.rows,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 
-export const vehicleController={
-    createVehicle
-}
+export const vehicleController = {
+  createVehicle,
+  getAllVehicle,
+};
