@@ -3,7 +3,6 @@ import { userServices } from "./user.service";
 
 // createUser
 const createUser = async (req: Request, res: Response) => {
-
   try {
     const result = await userServices.createUser(req.body);
     res.status(201).json({
@@ -32,6 +31,35 @@ const getAllUser = async (req: Request, res: Response) => {
     });
   } catch (error: any) {
     res.status(404).json({
+      success: false,
+      message: error.message,
+      details: error,
+    });
+  }
+};
+
+// get single user
+
+const getSingleUser = async (req: Request, res: Response) => {
+  try {
+    const email = req.user!.email;
+
+    const result = await userServices.getSingleUser(email);
+
+    if (result.rows.length === 0) {
+      res.status(404).json({
+        success: false,
+        message: "Users Not Found",
+      });
+    } else {
+      res.status(200).json({
+        success: true,
+        message: "User fetch successfully",
+        data: result.rows[0],
+      });
+    }
+  } catch (error: any) {
+    res.status(500).json({
       success: false,
       message: error.message,
       details: error,
@@ -101,4 +129,5 @@ export const userControllers = {
   getAllUser,
   updateUser,
   deleteUser,
+  getSingleUser,
 };

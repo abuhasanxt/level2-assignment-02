@@ -7,6 +7,9 @@ const router = Router();
 router.post("/auth/signup", userControllers.createUser);
 // get all user with get method
 router.get("/users", auth("admin"), userControllers.getAllUser);
+// get single user with get method
+
+router.get("/singleUser",auth(), userControllers.getSingleUser);
 // update user with put method
 router.put("/users/:userId", auth("admin"), userControllers.updateUser);
 //user delete with delete method

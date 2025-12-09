@@ -17,7 +17,13 @@ const createUser = async (payload: Record<string, unknown>) => {
 const getAllUser = async () => {
   const result = await pool.query(`
         SELECT id,name,email,phone,role FROM users`);
- 
+
+  return result;
+};
+
+// get single user
+const getSingleUser = async (email: string) => {
+  const result = await pool.query(`SELECT * FROM users WHERE email =$1`, [ email]);
   return result;
 };
 //update user
@@ -44,4 +50,5 @@ export const userServices = {
   getAllUser,
   updateUser,
   deleteUser,
+  getSingleUser,
 };
