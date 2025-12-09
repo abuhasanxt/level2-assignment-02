@@ -97,9 +97,35 @@ const updatedVehicle=async(req:Request,res:Response)=>{
     });
   }
 }
+//delete vehicle
+const deleteVehicle=async(req:Request,res:Response)=>{
+    try {
+    const result = await vehicleServices.deleteVehicle(req.params.vehicleId as string);
+
+    if (result.rowCount === 0) {
+      res.status(404).json({
+        success: false,
+        message: "Vehicle Not Found",
+      });
+    } else {
+      res.status(200).json({
+        success: true,
+        message: "Vehicle Deleted successfully",
+        data: result.rows[0],
+      });
+    }
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+      details: error,
+    });
+  }
+}
 export const vehicleController = {
   createVehicle,
   getAllVehicle,
   getSingleVehicle,
-  updatedVehicle
+  updatedVehicle,
+  deleteVehicle
 };

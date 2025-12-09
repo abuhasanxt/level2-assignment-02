@@ -12,7 +12,13 @@ router.get("/vehicles", vehicleController.getAllVehicle);
 //get single vehicle with get method
 router.get("/vehicles/:vehicleId", vehicleController.getSingleVehicle);
 
-// update vehicle with put method 
-router.put("/vehicles/:vehicleId",auth("admin"),vehicleController.updatedVehicle)
+// update vehicle with put method
+router.put(
+  "/vehicles/:vehicleId",
+  auth("admin"),
+  vehicleController.updatedVehicle
+);
+// delete vehicle with delete method
+router.delete("/vehicles/:vehicleId", vehicleController.deleteVehicle);
 
 export const vehicleRoutes = router;
