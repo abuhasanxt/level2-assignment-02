@@ -12,7 +12,7 @@ const initDB = async () => {
         email VARCHAR (150) UNIQUE  NOT NULL,
         password TEXT NOT NULL,
         phone VARCHAR  (100) NOT NULL,
-        role VARCHAR (100)
+        role VARCHAR (100) NOT NULL
         )
         `);
   console.log("connect DB");

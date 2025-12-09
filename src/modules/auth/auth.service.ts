@@ -24,6 +24,7 @@ const signInUser = async (email: string, password: string) => {
     id:result.rows[0].id,
     name:result.rows[0].name,
     email:result.rows[0].email,
+    role:result.rows[0].role,
   }
 
   const token=jwt.sign(jwtPayload,config.jwtSecret as string)
