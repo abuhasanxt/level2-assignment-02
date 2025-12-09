@@ -12,4 +12,7 @@ router.get("/vehicles", vehicleController.getAllVehicle);
 //get single vehicle with get method
 router.get("/vehicles/:vehicleId", vehicleController.getSingleVehicle);
 
+// update vehicle with put method 
+router.put("/vehicles/:vehicleId",auth("admin"),vehicleController.updatedVehicle)
+
 export const vehicleRoutes = router;
