@@ -4,6 +4,7 @@ import { userRoutes } from "./modules/user/user.routes";
 import initDB from "./config/db";
 import config from "./config";
 import { authRoutes } from "./modules/auth/auth.routes";
+import { vehicleRoutes } from "./modules/vehicle/vehicle.route";
 
 const app = express();
 const port = config.port;
@@ -16,8 +17,10 @@ app.get("/", (req: Request, res: Response) => {
 });
 // user CRUD
 app.use("/api/v1", userRoutes);
-// user auth 
-app.use("/api/v1",authRoutes)
+// user auth
+app.use("/api/v1", authRoutes);
+//vehicle CRUD
+app.use("/api/v1",vehicleRoutes)
 
 //wrong route
 app.use((req, res) => {
