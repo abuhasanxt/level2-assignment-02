@@ -19,6 +19,10 @@ router.put(
   vehicleController.updatedVehicle
 );
 // delete vehicle with delete method
-router.delete("/vehicles/:vehicleId", vehicleController.deleteVehicle);
+router.delete(
+  "/vehicles/:vehicleId",
+  auth("admin"),
+  vehicleController.deleteVehicle
+);
 
 export const vehicleRoutes = router;

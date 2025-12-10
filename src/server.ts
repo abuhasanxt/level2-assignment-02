@@ -5,6 +5,7 @@ import initDB from "./config/db";
 import config from "./config";
 import { authRoutes } from "./modules/auth/auth.routes";
 import { vehicleRoutes } from "./modules/vehicle/vehicle.route";
+import { bookingRoutes } from "./modules/bookings/booking.route";
 
 const app = express();
 const port = config.port;
@@ -21,6 +22,9 @@ app.use("/api/v1", userRoutes);
 app.use("/api/v1", authRoutes);
 //vehicle CRUD
 app.use("/api/v1",vehicleRoutes)
+
+// bookings CRUD 
+app.use("/api/v1",bookingRoutes)
 
 //wrong route
 app.use((req, res) => {
