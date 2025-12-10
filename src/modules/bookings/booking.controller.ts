@@ -49,7 +49,39 @@ const getAllBooking = async (req: Request, res: Response) => {
   }
 };
 
+const updateBooking = async (req: Request, res: Response) => {
+  try {
+    const { status } = req.body || {};
+
+    if (!status) {
+      return res.status(400).json({
+        success: false,
+        message: "Status is required",
+      });
+    }
+
+    const userRole = req.user!.role;
+
+    const booking = await bookingServices.updateBooking(
+      req.params.bookingId as string,
+      status,
+      userRole
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Booking cancelled successfully",
+      data: booking,
+    });
+  } catch (error: any) {
+    res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 export const bookingController = {
   createBooking,
-  getAllBooking
+  getAllBooking,
+  updateBooking
 };

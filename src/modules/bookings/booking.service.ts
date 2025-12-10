@@ -85,8 +85,62 @@ const getAllBooking = async (userId: number, role: string) => {
 
   return result.rows;
 };
+const updateBooking = async (
+  bookingId: string,
+  status: string,
+  userRole: string
+) => {
+ 
+  const bookingRes = await pool.query(`SELECT * FROM bookings WHERE id=$1`, [
+    bookingId,
+  ]);
+
+  if (bookingRes.rows.length === 0) {
+    throw new Error("Booking not found");
+  }
+
+  const booking = bookingRes.rows[0];
+
+  
+  if (userRole === "customer") {
+    if (status !== "cancelled") {
+      throw new Error("Customer can only cancel booking");
+    }
+
+    const today = new Date();
+    const startDate = new Date(booking.rent_start_date);
+
+    if (today >= startDate) {
+      throw new Error("Cannot cancel booking after start date");
+    }
+  }
+
+  if (userRole === "admin") {
+    if (status !== "returned") {
+      throw new Error("Admin can only mark as returned");
+    }
+
+   
+    await pool.query(
+      `UPDATE vehicles SET availability_status='available' WHERE id=$1`,
+      [booking.vehicle_id]
+    );
+  }
+
+
+  const result = await pool.query(
+    `UPDATE bookings SET status=$1 WHERE id=$2 RETURNING *`,
+    [status, bookingId]
+  );
+
+  return result.rows[0];
+};
+
+
+
 
 export const bookingServices = {
   createBooking,
   getAllBooking,
+  updateBooking,
 };
