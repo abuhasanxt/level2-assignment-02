@@ -1,5 +1,5 @@
 Project name:Vehicle Rental System
-Live URL:
+Live URL: https://assignment-02-mocha.vercel.app
 Technology:{typescript,express.js,postgresql}
 .env Setup :{
     PORT=500,
