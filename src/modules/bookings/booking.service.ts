@@ -6,11 +6,9 @@ const createBooking = async (
   rent_start_date: string,
   rent_end_date: string
 ) => {
-
-  const vehicleRes = await pool.query(
-    `SELECT * FROM vehicles WHERE id=$1`,
-    [vehicle_id]
-  );
+  const vehicleRes = await pool.query(`SELECT * FROM vehicles WHERE id=$1`, [
+    vehicle_id,
+  ]);
 
   if (vehicleRes.rows.length === 0) {
     throw new Error("Vehicle not found");
@@ -22,7 +20,6 @@ const createBooking = async (
 
   const vehicle = vehicleRes.rows[0];
 
-  
   const start = new Date(rent_start_date);
   const end = new Date(rent_end_date);
 
@@ -30,7 +27,6 @@ const createBooking = async (
 
   const days = (end.getTime() - start.getTime()) / (1000 * 3600 * 24);
   const total_price = vehicle.daily_rent_price * days;
-
 
   const bookingRes = await pool.query(
     `
@@ -42,13 +38,11 @@ const createBooking = async (
     [customer_id, vehicle_id, rent_start_date, rent_end_date, total_price]
   );
 
-
   await pool.query(
     `UPDATE vehicles SET availability_status='booked' WHERE id=$1`,
     [vehicle_id]
   );
 
-  
   return {
     ...bookingRes.rows[0],
     vehicle: {
@@ -58,6 +52,41 @@ const createBooking = async (
   };
 };
 
+const getAllBooking = async (userId: number, role: string) => {
+  let result;
+
+  if (role === "admin") {
+    result = await pool.query(`
+      SELECT b.*, 
+             json_build_object(
+               'vehicle_name', v.vehicle_name,
+               'daily_rent_price', v.daily_rent_price
+             ) AS vehicle
+      FROM bookings b
+      JOIN vehicles v ON b.vehicle_id = v.id
+      ORDER BY b.id DESC
+    `);
+  } else {
+    result = await pool.query(
+      `
+      SELECT b.*, 
+             json_build_object(
+               'vehicle_name', v.vehicle_name,
+               'daily_rent_price', v.daily_rent_price
+             ) AS vehicle
+      FROM bookings b
+      JOIN vehicles v ON b.vehicle_id = v.id
+      WHERE b.customer_id = $1
+      ORDER BY b.id DESC
+    `,
+      [userId]
+    );
+  }
+
+  return result.rows;
+};
+
 export const bookingServices = {
   createBooking,
+  getAllBooking,
 };
