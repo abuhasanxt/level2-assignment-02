@@ -6,14 +6,15 @@ export const pool = new Pool({
 });
 const initDB = async () => {
   await pool.query(`
-        CREATE TABLE IF NOT EXISTS users(
-        id SERIAL PRIMARY KEY,
-        name VARCHAR(200) NOT  NULL,
-        email VARCHAR (150) UNIQUE  NOT NULL,
-        password TEXT NOT NULL,
-        phone VARCHAR  (100) NOT NULL,
-        role VARCHAR (100) NOT NULL
-        )
+      CREATE TABLE IF NOT EXISTS users (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(200) NOT NULL,
+    email VARCHAR(150) UNIQUE NOT NULL,
+    password TEXT NOT NULL CHECK (LENGTH(password) >= 6),
+    phone VARCHAR(100) NOT NULL,
+    role VARCHAR(100) NOT NULL CHECK (role IN ('admin','customer'))
+);
+
         `);
 
   await pool.query(`

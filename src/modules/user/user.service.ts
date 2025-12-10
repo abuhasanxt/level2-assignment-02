@@ -1,13 +1,24 @@
 import bcrypt from "bcryptjs";
 import { pool } from "../../config/db";
 //create user
-const createUser = async (payload: Record<string, unknown>) => {
-  const { name, email, password, phone, role } = payload;
+interface CreateUserPayload {
+  name: string;
+  email: string;
+  password: string;
+  phone: number;
+  role: "admin" | "customer";
+}
 
+const createUser = async (payload: CreateUserPayload) => {
+  const { name, email, password, phone, role } = payload;
+if (password.length < 6) {
+    throw new Error("Password must be at least 6 characters long");
+  }
+  const lowerEmail = email.toLowerCase();
   const hasPassword = await bcrypt.hash(password as string, 10);
   const result = await pool.query(
     `INSERT INTO users (name,email,password,phone,role) VALUES ($1,$2,$3,$4,$5) RETURNING *`,
-    [name, email, hasPassword, phone, role]
+    [name, lowerEmail, hasPassword, phone, role]
   );
   delete result.rows[0].password;
   return result;
