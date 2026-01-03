@@ -5,11 +5,19 @@ import { pool } from "../config/db";
 const auth = (...roles: string[]) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const token = req.headers.authorization;
-      if (!token) {
+      const authHeader = req.headers.authorization;
+
+      if (!authHeader) {
         return res.status(401).json({
           success: false,
           message: "You are not allowed",
+        });
+      }
+      const token = authHeader.split(" ")[1];
+      if (!token) {
+        return res.status(401).json({
+          success: false,
+          message: "Token missing",
         });
       }
       const decoded = jwt.verify(
@@ -34,7 +42,7 @@ const auth = (...roles: string[]) => {
           error: "unauthorized",
         });
       }
-      console.log(decoded);
+
       next();
     } catch (error: any) {
       res.status(500).json({
